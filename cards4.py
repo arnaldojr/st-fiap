@@ -60,7 +60,7 @@ card_ids = ["card_1", "card_2", "card_3"]
 
 for i, card_id in enumerate(card_ids):
     with cols[i]:
-        if st.button("", key=f"flip_{card_id}_{round_selected}"):
+        if st.button(f"Pergunta {i+1} {round_selected}", key=f"flip_{card_id}_{round_selected}"):
             flip_card(card_id)
         if st.session_state.get(f"flipped_{card_id}", False):
             st.image(images[card_id]["back"], use_column_width=True)
