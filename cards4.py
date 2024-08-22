@@ -60,10 +60,33 @@ card_ids = ["card_1", "card_2", "card_3"]
 
 for i, card_id in enumerate(card_ids):
     with cols[i]:
-        if st.button(f"Pergunta {i+1}", key=f"flip_{card_id}_{round_selected}"):
+        if st.button("", key=f"flip_{card_id}_{round_selected}"):
             flip_card(card_id)
         if st.session_state.get(f"flipped_{card_id}", False):
             st.image(images[card_id]["back"], use_column_width=True)
+            # Mostrar o desafio para o usuário
+            st.write("### Desafio:")
+            st.write("Escreva uma função em Python que calcule o fatorial de 5! dividido por 6!")
+            st.code("def calcular_fatorial_divisao():\n    # Escreva seu código aqui", language="python")
+            user_code = st.text_area("Insira seu código abaixo e clique em 'Executar'", height=200)
+            if st.button("Executar código"):
+                try:
+                    # Variáveis auxiliares
+                    local_variables = {}
+                    # Executa o código do usuário
+                    exec(user_code, {}, local_variables)
+                    # Verifica se a função foi definida
+                    if "calcular_fatorial_divisao" in local_variables:
+                        # Executa a função e verifica o resultado
+                        result = local_variables["calcular_fatorial_divisao"]()
+                        if result == 1/6:  # O resultado correto de 5!/6! é 1/6
+                            st.success("Parabéns! Você acertou!")
+                        else:
+                            st.error("O resultado está incorreto. Tente novamente!")
+                    else:
+                        st.error("Certifique-se de que sua função esteja corretamente definida como 'calcular_fatorial_divisao'.")
+                except Exception as e:
+                    st.error(f"Erro ao executar o código: {e}")
         else:
             st.image(images[card_id]["front"], use_column_width=True)
 
